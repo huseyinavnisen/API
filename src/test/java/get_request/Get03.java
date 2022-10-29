@@ -1,3 +1,6 @@
+package get_request;
+
+import base_url.JsonplaceholderBaseUrl;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import org.junit.Test;
@@ -34,6 +37,7 @@ public class Get03 extends JsonplaceholderBaseUrl {
         // Send the request and Get Response
 
         Response response = given().spec(spec).when().get("/{first}/{second}");
+
         response.prettyPrint();
 
         // Do assertion
