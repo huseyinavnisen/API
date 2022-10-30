@@ -6,6 +6,13 @@ import org.junit.Test;
 import static io.restassured.RestAssured.*;
 
 public class Get01 {
+
+//Set the Url
+//Set The Expected Data
+//Send The Request and Get The Response
+//Do Assertion
+
+
     /*
     1-Postman, manuel API testleri için kullandık
     2 -Otomasyon testleri içinde Rest Assured Library kullanacağız
