@@ -70,9 +70,6 @@ Given
         //Header konsola yazdırın
         System.out.println("Header : "+response.getHeader("Server")); // Cowboy
 
-        //Headers konsola yazdırın
-        System.out.println("Header : "+response.getHeaders());
-
         // Time Konsola yazdırın
         System.out.println("Time :"+response.getTime());
 

@@ -1,4 +1,4 @@
-package get_requests;
+package Ders_Zoom;
 
 import base_urls.AutomationExercieseBaseUrl;
 import io.restassured.path.json.JsonPath;
@@ -9,6 +9,7 @@ import org.testng.asserts.SoftAssert;
 import java.util.List;
 
 import static io.restassured.RestAssured.given;
+import static org.junit.Assert.assertEquals;
 
 public class Odev_1 extends AutomationExercieseBaseUrl {
     /*
@@ -37,17 +38,15 @@ public class Odev_1 extends AutomationExercieseBaseUrl {
         JsonPath jsonPath = response.jsonPath();
         // jsonPath.prettyPrint();
 
-        List<String> usertypeListi = jsonPath.getList("products.category.usertype.usertype"); // JSON bodysinin usertype içeriği Liste eklendi
+        // 1. Yol. Tek lis oluşturma
 
-        int womenSayisi = 0, menSayisi = 0, kidsSayisi = 0;
+        List<String> usertypeListi = jsonPath.getList("products.category.usertype.usertype"); // JSON bodysinin usertype içeriği Liste eklendi
+               int womenSayisi = 0, menSayisi = 0, kidsSayisi = 0;
         for (int i = 0; i < usertypeListi.size(); i++) {
             if (usertypeListi.get(i).equals("Women")) womenSayisi++;
             if (usertypeListi.get(i).equals("Men")) menSayisi++;
             if (usertypeListi.get(i).equals("Kids")) kidsSayisi++;
         }
-        System.out.println("womenSayisi = " + womenSayisi + "  " + "menSayisi = " + menSayisi + "  " + "kidsSayisi = " + kidsSayisi);
-
-
         softAssert.assertEquals(12, womenSayisi, "Women Sayisi 12 değil");
         softAssert.assertEquals(9, menSayisi, "Men Sayisi 9 değil");
         softAssert.assertEquals(13, kidsSayisi, "Çocuk Sayisi 13 değil");
@@ -56,6 +55,17 @@ public class Odev_1 extends AutomationExercieseBaseUrl {
         softAssert.assertEquals("text/html; charset=utf-8", response.getContentType(), "Content Type HATALI");
         softAssert.assertEquals("HTTP/1.1 200 OK", response.getStatusLine(), "Get Status Line HATALI");
         softAssert.assertAll();
+
+
+        // 2. Yol. Her Tür için ayrı ayrı List oluşturma
+        List<String> womenList = jsonPath.getList("products.category.usertype.findAll{it.usertype=='Women'}.usertype");
+        List<String> menList = jsonPath.getList("products.category.usertype.findAll{it.usertype=='Men'}.usertype");
+        List<String> kidsList = jsonPath.getList("products.category.usertype.findAll{it.usertype=='Kids'}.usertype");
+        softAssert.assertEquals(12,womenList.size(),"Women Sayisi 12 değil");
+        softAssert.assertEquals(9,menList.size(),"Men Sayisi 9 değil");
+        softAssert.assertEquals(13,kidsList.size(),"Çocuk Sayisi 13 değil");
+
+
     }
 }
 

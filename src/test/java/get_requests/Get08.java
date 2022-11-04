@@ -1,15 +1,12 @@
 package get_requests;
-
 import base_urls.JsonplaceholderBaseUrl;
 import io.restassured.response.Response;
 import org.junit.Test;
-
+import test_data.JsonPlaceHolderTestData;
 import java.util.HashMap;
 import java.util.Map;
-
 import static io.restassured.RestAssured.*;
 import static org.testng.AssertJUnit.*;
-
 public class Get08 extends JsonplaceholderBaseUrl {
     //  serializition ==> Java objesini JYSON'a çevirme
     //  deserializition - JSON'dan Java'ya dönüştürme
@@ -40,7 +37,8 @@ public class Get08 extends JsonplaceholderBaseUrl {
         spec.pathParams("first", "todos", "second", 2);
         //Set The Expected Data
         //  serializition ==> Java objesini JYSON'a çevirme
-        Map<String, Object> expectedData = new HashMap<>();
+       // Map<String, Object> expectedData = new HashMap<>();
+        Map<String, Object> expectedData = new HashMap<>(Map.of("userId", 1,"id", 2,"title", "quis ut nam facilis et officia qui","completed", false));
         expectedData.put("userId", 1);
         expectedData.put("id", 2);
         expectedData.put("title", "quis ut nam facilis et officia qui");
@@ -54,12 +52,42 @@ public class Get08 extends JsonplaceholderBaseUrl {
         System.out.println("actualData = " + actualData); //actualData = {id=2, completed=false, title=quis ut nam facilis et officia qui, userId=1}
         //  deserializition - JSON'dan Java'ya dönüştürme
         assertEquals(expectedData.get("userId"), actualData.get("userId"));
+        assertEquals(1, actualData.get("userId"));
         assertEquals(expectedData.get("id"), actualData.get("id"));
         assertEquals(expectedData.get("title"), actualData.get("title"));
         assertEquals(expectedData.get("completed"), actualData.get("completed"));
         assertEquals("1.1 vegur", response.header("Via"));
         assertEquals("cloudflare", response.header("Server"));
-        assertEquals(200,response.statusCode());
+        assertEquals(200, response.statusCode());
+    }
+
+
+
+
+
+    // Çözüm - 2 Dinamik Yöntem - Test_data methodundan obje oluşturarark
+
+    @Test
+    public void test1b() {
+//Set the Url
+        spec.pathParams("first", "todos", "second", 2);
+        //Set The Expected Data
+        JsonPlaceHolderTestData objJsonPlcHldr = new JsonPlaceHolderTestData();
+        Map<String, Object> expectedData = objJsonPlcHldr.expectedDataMethod(1, "quis ut nam facilis et officia qui", false);
+
+//Send The Request and Get The Response
+        Response response = given().spec(spec).when().get("/{first}/{second}");
+        response.prettyPrint();
+//Do Assertion
+        Map<String, Object> actualData = response.as(HashMap.class);
+        System.out.println("actualData = " + actualData); //actualData = {id=2, completed=false, title=quis ut nam facilis et officia qui, userId=1}
+        assertEquals(expectedData.get("userId"), actualData.get("userId"));
+        assertEquals(expectedData.get("title"), actualData.get("title"));
+        assertEquals(expectedData.get("completed"), actualData.get("completed"));
+
+        assertEquals("1.1 vegur", response.header("Via"));
+        assertEquals("cloudflare", response.header("Server"));
+        assertEquals(200, response.statusCode());
     }
 }
 

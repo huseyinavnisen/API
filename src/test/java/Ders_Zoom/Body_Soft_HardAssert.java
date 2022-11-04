@@ -1,14 +1,14 @@
-package get_requests;
+package Ders_Zoom;
 
 import base_urls.JsonplaceholderBaseUrl;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import org.junit.Test;
 
-import static io.restassured.RestAssured.*;
-import static org.hamcrest.Matchers.*;
+import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.equalTo;
 
-public class Get03 extends JsonplaceholderBaseUrl {
+public class Body_Soft_HardAssert extends JsonplaceholderBaseUrl {
      /*
       Given
           https://jsonplaceholder.typicode.com/todos/23
@@ -37,7 +37,6 @@ public class Get03 extends JsonplaceholderBaseUrl {
         // Send the request and Get Response
 
         Response response = given().spec(spec).when().get("/{first}/{second}");
-
         response.prettyPrint();
 
         // Do assertion
